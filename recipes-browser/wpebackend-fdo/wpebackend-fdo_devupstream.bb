@@ -13,5 +13,8 @@ DEFAULT_PREFERENCE = "-1"
 DEPENDS = "glib-2.0 libxkbcommon wayland libepoxy libwpe"
 
 SRC_URI = "git://github.com/Igalia/WPEBackend-fdo.git;protocol=https;branch=master"
-SRCREV = "6796611f4a0c5b11ebc58466d73880ef2781e4ef"
+SRCREV = "04f7c227a2ba65656dbae16d545ce71d5970c920"
 S = "${WORKDIR}/git"
+
+SRC_URI_class-devupstream = "${SRC_URI}"
+SRCREV_class-devupstream = "${SRCREV}"
