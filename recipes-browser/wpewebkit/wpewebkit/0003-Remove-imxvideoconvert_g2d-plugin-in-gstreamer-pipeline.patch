@@ -1,0 +1,51 @@
+From d83bbd02a91f85ef0996b4715b11a42d2e5790a3 Mon Sep 17 00:00:00 2001
+From: Lukas Mittermeier <lmi@innovaphone.com>
+Date: Tue, 16 Nov 2021 16:23:03 +0000
+Subject: [PATCH] Remove imxVideoConvertG2D
+
+---
+ .../graphics/gstreamer/GLVideoSinkGStreamer.cpp   | 15 ---------------
+ 1 file changed, 15 deletions(-)
+
+diff --git a/Source/WebCore/platform/graphics/gstreamer/GLVideoSinkGStreamer.cpp b/Source/WebCore/platform/graphics/gstreamer/GLVideoSinkGStreamer.cpp
+index 2da883d840ca..cbbf21719229 100644
+--- a/Source/WebCore/platform/graphics/gstreamer/GLVideoSinkGStreamer.cpp
++++ b/Source/WebCore/platform/graphics/gstreamer/GLVideoSinkGStreamer.cpp
+@@ -68,17 +68,6 @@ static void webKitGLVideoSinkConstructed(GObject* object)
+     ASSERT(sink->priv->appSink);
+     g_object_set(sink->priv->appSink.get(), "enable-last-sample", FALSE, "emit-signals", TRUE, "max-buffers", 1, nullptr);
+ 
+-    auto* imxVideoConvertG2D =
+-        []() -> GstElement*
+-        {
+-            auto elementFactor = adoptGRef(gst_element_factory_find("imxvideoconvert_g2d"));
+-            if (elementFactor)
+-                return gst_element_factory_create(elementFactor.get(), nullptr);
+-            return nullptr;
+-        }();
+-    if (imxVideoConvertG2D)
+-        gst_bin_add(GST_BIN_CAST(sink), imxVideoConvertG2D);
+-
+     GstElement* upload = makeGStreamerElement("glupload", nullptr);
+     GstElement* colorconvert = makeGStreamerElement("glcolorconvert", nullptr);
+ 
+@@ -108,16 +97,12 @@ static void webKitGLVideoSinkConstructed(GObject* object)
+     gst_caps_set_features(caps.get(), 0, gst_caps_features_new(GST_CAPS_FEATURE_MEMORY_GL_MEMORY, nullptr));
+     g_object_set(sink->priv->appSink.get(), "caps", caps.get(), nullptr);
+ 
+-    if (imxVideoConvertG2D)
+-        gst_element_link(imxVideoConvertG2D, upload);
+     gst_element_link(upload, colorconvert);
+ 
+     gst_element_link(colorconvert, sink->priv->appSink.get());
+ 
+     GstElement* sinkElement =
+         [&] {
+-            if (imxVideoConvertG2D)
+-                return imxVideoConvertG2D;
+             return upload;
+         }();
+     GRefPtr<GstPad> pad = adoptGRef(gst_element_get_static_pad(sinkElement, "sink"));
+-- 
+2.25.1
+

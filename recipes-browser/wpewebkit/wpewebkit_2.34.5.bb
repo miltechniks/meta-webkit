@@ -15,9 +15,10 @@ RCONFLICTS:${PN} = "libwpe (< 1.8) wpebackend-fdo (< 1.10)"
 SRC_URI:class-devupstream = "\
     git://git.webkit.org/WebKit.git;branch=master \
     file://0002-libyuv-gcc-issue.patch \
+    file://0003-Remove-imxvideoconvert_g2d-plugin-in-gstreamer-pipeline.patch \
 "
 # WPE 2.34.X branch was forked from the main branch in this commit
-SRCREV:class-devupstream = "30c41fe654d9556a5681663166c1461132326ff7"
+SRCREV:class-devupstream = "02f9ece13c91d57813ff28d32cd30be90a81535b"
 
 # Needed for since >2.34.
 PACKAGECONFIG[dfg-jit] = "-DENABLE_DFG_JIT=ON,-DENABLE_DFG_JIT=OFF,"
