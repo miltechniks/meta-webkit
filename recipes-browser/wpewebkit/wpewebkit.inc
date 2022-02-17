@@ -90,7 +90,7 @@ PACKAGECONFIG[unified-builds] = "-DENABLE_UNIFIED_BUILDS=ON,-DENABLE_UNIFIED_BUI
 PACKAGECONFIG[thunder] = "-DENABLE_THUNDER=ON,-DENABLE_THUNDER=OFF,virtual/open-cdm"
 PACKAGECONFIG[video-plane-display-dmabuf] = "-DUSE_WPE_VIDEO_PLANE_DISPLAY_DMABUF=ON,-DUSE_WPE_VIDEO_PLANE_DISPLAY_DMABUF=OFF,wpebackend-fdo"
 PACKAGECONFIG[webxr] = "-DENABLE_WEBXR=ON,-DENABLE_WEBXR=OFF,openxr"
-PACKAGECONFIG[jit] = "-DENABLE_JIT=ON,-DENABLE_JIT=OFF -DENABLE_C_LOOP=ON,"
+PACKAGECONFIG[jit] = "-DENABLE_JIT=ON -DENABLE_C_LOOP=OFF,-DENABLE_JIT=OFF -DENABLE_C_LOOP=ON,"
 PACKAGECONFIG[gold] = "-DUSE_LD_GOLD=ON,-DUSE_LD_GOLD=OFF,"
 
 EXTRA_OECMAKE = " -DPORT=WPE -G Ninja"
@@ -109,6 +109,10 @@ PACKAGECONFIG:remove:riscv32 = "jit gold"
 PACKAGECONFIG:remove:riscv64 = "jit gold"
 PACKAGECONFIG:remove:mipsarchn64 = "jit"
 PACKAGECONFIG:remove:mipsarchn32 = "jit"
+
+# Javascript JIT is not supported on x86
+PACKAGECONFIG:remove:x86 = "jit"
+
 # mips/gold does not yet implement
 # error: .gnu.hash is incompatible with the MIPS ABI
 PACKAGECONFIG:remove:mipsarcho32 = "gold"
